@@ -1,0 +1,21 @@
+site_name: Пример документации API
+site_url: https://Dennnis-2020.github.io/mkdocs
+theme:
+  name: material
+
+plugins:
+  - search
+  - swagger-ui-tag  # Плагин для Swagger
+
+markdown_extensions:
+  - admonition # Блоки !!! note, !!! warning
+  - pymdownx.details # Сворачиваемые блоки
+  - pymdownx.superfences # Вложенные блоки кода
+  - pymdownx.tabbed: # Табы
+
+nav:
+  - Главная: index.md
+  - Обзор: overview.md
+  - Справочник API: swagger.md
+
+

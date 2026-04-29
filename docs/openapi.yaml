@@ -1,0 +1,520 @@
+openapi: 3.0.0
+
+info:
+  title: Пример API для работы с пользователями
+  description: API для создания, получения, обновления и удаления пользователей.
+  version: 1.0.0
+
+security:
+  - api_key: []
+
+servers:
+  - url: https://api.documentat.io/api/prod
+    description: Основной сервер
+  - url: https://api.documentat.io/api/dev
+    description: Тестовый сервер
+
+paths:
+  /users:
+    get:
+      summary: Получить список всех пользователей
+      operationId: usersGET
+      tags:
+        - users
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          description: Максимальное количество элементов на странице
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          $ref: '#/components/responses/UserListSuccess'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    post:
+      summary: Создать нового пользователя
+      operationId: usersPOST
+      tags:
+        - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUser'
+      responses:
+        '201':
+          $ref: '#/components/responses/UserCreationSuccess'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /users/{id}:
+    get:
+      summary: Получить информацию о пользователе по ID
+      operationId: usersIdGET
+      tags:
+        - users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Уникальный идентификатор пользователя
+          schema:
+            type: integer
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/UserNotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    put:
+      summary: "Обновить все параметры пользователя по ID"
+      operationId: usersIdPUT
+      tags:
+        - users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Уникальный идентификатор пользователя
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        description: Параметры пользователя
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUser'
+      responses:
+        '200':
+          description: Обновление всех параметров прошло успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UserUpdateSuccess'
+        '401':
+          description: Ошибка авторизации
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/Unauthorized'
+              example:
+                code: 401
+                message: "Неавторизованный доступ"
+        '404':
+          description: Пользователь не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UserNotFound'
+              example:
+                code: 404
+                message: "Не найден ресурс"
+        '405':
+          description: Метод не поддерживается
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/MethodNotAllowed'
+              example:
+                code: 405
+                message: "Неизвестный метод"
+        '422':
+          description: Объект в запросе не может быть обработан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnprocessableEntity'
+              example:
+                code: 422
+                message: "Невозможно обработать содержимое запроса"
+        '500':
+          description: Сервер не может выполнить запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/ServerError'
+              example:
+                code: 500
+                message: "Ошибка сервера"
+    patch:
+      summary: "Обновить параметры пользователя ао ID"
+      operationId: usersIdPATCH
+      tags:
+        - users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Уникальный идентификатор пользователя
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PartialUserUpdate'
+      responses:
+        '200':
+          description: Обновление всех параметров прошло успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UserUpdateSuccess'
+        '401':
+          description: Ошибка авторизации
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/Unauthorized'
+              example:
+                code: 401
+                message: "Неавторизованный доступ"
+        '404':
+          description: Пользователь не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UserNotFound'
+              example:
+                code: 404
+                message: "Не найден ресурс"
+        '405':
+          description: Метод не поддерживается
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/MethodNotAllowed'
+              example:
+                code: 405
+                message: "Неизвестный метод"
+        '422':
+          description: Объект в запросе не может быть обработан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnprocessableEntity'
+              example:
+                code: 422
+                message: "Невозможно обработать содержимое запроса"
+        '500':
+          description: Объект в запросе не может быть обработан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/ServerError'
+              example:
+                code: 500
+                message: "Ошибка сервера"
+    delete:
+      summary: Удалить пользователя
+      operationId: usersIdDELETE
+      tags:
+        - users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Уникальный идентификатор пользователя
+          schema:
+            type: integer
+      responses:
+        '204':
+          $ref: '#/components/responses/UserDeleteSuccess'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/UserNotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - id
+        - username
+        - email
+        - firstName
+        - lastName
+        - address
+        - age
+        - isEmployee
+        - accountStatus
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Уникальный идентификатор пользователя
+        username:
+          type: string
+          description: Логин пользователя
+        email:
+          type: string
+          description: Электронная почта пользователя
+        firstName:
+          type: string
+          description: Имя пользователя
+        lastName:
+          type: string
+          description: Фамилия пользователя
+        address:
+          type: object
+          description: Адрес пользователя
+          properties:
+            country:
+              type: string
+              description: Страна
+            city:
+              type: string
+              description: Город
+            street:
+              type: string
+              description: Улица
+            house:
+              type: string
+              description: Дом
+          required:
+            - country
+            - city
+            - street
+            - house
+        age:
+          type: integer
+          description: Возраст
+        isEmployee:
+          type: boolean
+          default: true
+          description: Служебный аккаунт
+        accountStatus:
+          type: string
+          default: active
+          description: Статус аккаунта
+          enum:
+            - active
+            - inactive
+            - suspended
+
+    CreateUser:
+      type: object
+      required:
+        - username
+        - email
+        - firstName
+        - lastName
+        - address
+        - age
+        - isEmployee
+        - accountStatus
+      properties:
+        username:
+          type: string
+          description: Логин пользователя
+        email:
+          type: string
+          description: Электронная почтп
+        firstName:
+          type: string
+          description: Имя пользователя
+        lastName:
+          type: string
+          description: Фамилия пользователя
+        address:
+          type: object
+          description: Адрес пользователя
+          properties:
+            country:
+              type: string
+              description: Страна
+            city:
+              type: string
+              description: Город
+            street:
+              type: string
+              description: Улица
+            house:
+              type: string
+              description: Дом
+          required:
+            - country
+            - city
+            - street
+            - house
+        age:
+          type: integer
+          description: Возраст
+        isEmployee:
+          type: boolean
+          default: true
+          description: Служебный аккаунт
+        accountStatus:
+          type: string
+          default: active
+          description: Статус аккаунта
+          enum:
+            - active
+            - inactive
+            - suspended
+
+    PartialUserUpdate:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Логин пользователя
+        email:
+          type: string
+          description: Электронная почта
+        firstName:
+          type: string
+          description: Имя пользователя
+        lastName:
+          type: string
+          description: Фамилия пользователя
+        address:
+          type: object
+          description: Адресс пользователя
+          properties:
+            country:
+              type: string
+              description: Страна
+            city:
+              type: string
+              description: Город
+            street:
+              type: string
+              description: Улица
+            house:
+              type: string
+              description: Дом
+        age:
+          type: integer
+          description: Возраст
+        isEmployee:
+          type: boolean
+          default: true
+          description: Служебный аккаунт
+        accountStatus:
+          type: string
+          default: active
+          description: Сиаиус аккаунта
+          enum:
+            - active
+            - inactive
+            - suspended
+
+    error:
+      required:
+        - code
+        - message
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Код ошибки
+        message:
+          type: string
+          description: Сообщение системы
+
+  responses:
+    UserListSuccess:
+      description: Список пользователей успешно получен
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/User'
+
+    Success:
+      description: Данные успешно получены
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+
+    UserCreationSuccess:
+      description: Пользователь успешно создан
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+
+    UserUpdateSuccess:
+      description: Данные пользователя успешно обновлены
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+
+    UserDeleteSuccess:
+      description: Пользователь успешно удален
+
+    UserNotFound:
+      description: "Пользователь не найден"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+
+    Unauthorized:
+      description: "Ошибка авторизации"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+
+    Conflict:
+      description: "Конфликт данных в запросе"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+
+    MethodNotAllowed:
+      description: "Метод не поддерживается"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+
+    ServerError:
+      description: "Сервер не может выполнить запрос"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+
+    UnprocessableEntity:
+      description: "Объект в запросе не может быть обработан"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: Token
+      in: header
+
+tags:
+  - name: users
+    description: Операции с пользователями
