@@ -14,7 +14,7 @@ markdown_extensions:
   - pymdownx.tabbed: # Табы
 
 nav:
-  - Обзор: overview.md
+  - Обзор: index.md
   - Быстрый старт: start.md
   - Справочник API: swagger.md
 
