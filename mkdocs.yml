@@ -15,7 +15,7 @@ markdown_extensions:
 
 nav:
   - Обзор: overview.md
-  - Быстрый старт: index.md
+  - Быстрый старт: start.md
   - Справочник API: swagger.md
 
 
