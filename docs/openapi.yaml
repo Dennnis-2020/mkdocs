@@ -268,12 +268,18 @@ components:
         email:
           type: string
           description: Электронная почта пользователя
+          maxLength: 200
+          minLength: 2
         firstName:
           type: string
           description: Имя пользователя
+          maxLength: 200
+          minLength: 2
         lastName:
           type: string
           description: Фамилия пользователя
+          maxLength: 200
+          minLength: 2
         address:
           type: object
           description: Адрес пользователя
@@ -281,12 +287,18 @@ components:
             country:
               type: string
               description: Страна
+              maxLength: 200
+              minLength: 2
             city:
               type: string
               description: Город
+              maxLength: 200
+              minLength: 2
             street:
               type: string
               description: Улица
+              maxLength: 200
+              minLength: 2
             house:
               type: string
               description: Дом
@@ -298,6 +310,8 @@ components:
         age:
           type: integer
           description: Возраст
+          maximum: 200
+          maximum: 18
         isEmployee:
           type: boolean
           default: true
@@ -326,15 +340,23 @@ components:
         username:
           type: string
           description: Логин пользователя
+          maxLength: 200
+          minLength: 2 
         email:
           type: string
-          description: Электронная почтп
+          description: Электронная почта
+          maxLength: 200
+          minLength: 4 
         firstName:
           type: string
           description: Имя пользователя
+          maxLength: 200
+          minLength: 2 
         lastName:
           type: string
           description: Фамилия пользователя
+          maxLength: 200
+          minLength: 2           
         address:
           type: object
           description: Адрес пользователя
@@ -342,12 +364,18 @@ components:
             country:
               type: string
               description: Страна
+              maxLength: 200
+              minLength: 2 
             city:
               type: string
               description: Город
+              maxLength: 200
+              minLength: 2 
             street:
               type: string
               description: Улица
+              maxLength: 200
+              minLength: 2 
             house:
               type: string
               description: Дом
@@ -359,6 +387,8 @@ components:
         age:
           type: integer
           description: Возраст
+          maximum: 200
+          maximum: 18
         isEmployee:
           type: boolean
           default: true
@@ -378,34 +408,50 @@ components:
         username:
           type: string
           description: Логин пользователя
+          maxLength: 200
+          minLength: 2 
         email:
           type: string
           description: Электронная почта
+          maxLength: 200
+          minLength: 4
         firstName:
           type: string
           description: Имя пользователя
         lastName:
           type: string
           description: Фамилия пользователя
+          maxLength: 200
+          minLength: 2 
         address:
           type: object
-          description: Адресс пользователя
+          description: Адрес пользователя
+          maxLength: 200
+          minLength: 2 
           properties:
             country:
               type: string
               description: Страна
+              maxLength: 200
+              minLength: 2 
             city:
               type: string
               description: Город
+              maxLength: 200
+              minLength: 2              
             street:
               type: string
               description: Улица
+              maxLength: 200
+              minLength: 2
             house:
               type: string
               description: Дом
         age:
           type: integer
           description: Возраст
+          maximum: 200
+          maximum: 18
         isEmployee:
           type: boolean
           default: true
@@ -413,7 +459,7 @@ components:
         accountStatus:
           type: string
           default: active
-          description: Сиаиус аккаунта
+          description: Статус аккаунта
           enum:
             - active
             - inactive
