@@ -310,8 +310,6 @@ components:
         age:
           type: integer
           description: Возраст
-          maximum: 200
-          minimum: 18
         isEmployee:
           type: boolean
           default: true
@@ -387,8 +385,6 @@ components:
         age:
           type: integer
           description: Возраст
-          maximum: 200
-          minimum: 18
         isEmployee:
           type: boolean
           default: true
@@ -450,8 +446,6 @@ components:
         age:
           type: integer
           description: Возраст
-          maximum: 200
-          minimum: 18
         isEmployee:
           type: boolean
           default: true
