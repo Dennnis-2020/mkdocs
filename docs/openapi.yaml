@@ -265,6 +265,8 @@ components:
         username:
           type: string
           description: Логин пользователя
+          maxLength: 200
+          minLength: 2
         email:
           type: string
           description: Электронная почта пользователя
